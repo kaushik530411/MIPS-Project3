@@ -142,6 +142,8 @@ start_conversion:
 
 	needs_pading:
 		jal padding
+	  
+	  jal ConversionMain
 
 is_long:
 	li $v0, 4  #  system call code for printing string = 4
@@ -170,9 +172,10 @@ padding:
 	padding_done
 		jr $ra
 
+ConversionMain:
 actual_conversion_loop:
 	lb $a0, 0($t0)
-	beq $a0, 10, print_value # last char is line feed ($a0 = 10) so exit the loop and start conversion
+	beq $a0, 10, conversion_done # last char is line feed ($a0 = 10) so exit the loop and start conversion
 
 	addi $t0, $t0, 1  #  shifing the marker to the right by one byte
 
@@ -227,3 +230,6 @@ lower_conversion:
 	div $a2, $a1
 	mflo $a2  #  [35^(n-1) = (35^n)/35]
 	j actual_conversion_loop
+
+conversion_done:
+	jr $ra
