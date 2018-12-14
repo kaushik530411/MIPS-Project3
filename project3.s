@@ -151,8 +151,8 @@ start_conversion:
 	  
 	  jal ConversionMain
 
-
-	
+	  jal print_value
+	  
 exit:
 	li $v0, 10 # end the program
 	syscall
@@ -162,6 +162,7 @@ print_value:
 	li $v0, 1  # to print the intezer
 	addi $a0, $t8, 0  # print the actual sum
 	syscall
+	jr $ra
 
 padding:
 	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
