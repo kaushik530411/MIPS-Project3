@@ -174,6 +174,7 @@ padding:
 		mflo $a2
 		j padding_loop
 	padding_done:
+		move $v1, $a2
 		jr $ra
 
 ConversionMain:
