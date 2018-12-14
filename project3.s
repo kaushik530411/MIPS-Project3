@@ -129,9 +129,6 @@ is_long:
 	j exit  #  exit since it is too long
 
 start_conversion:
-	li $a1, 35  #  loading the base
-	li $a2, 42875  #  (base^3) -> Highest possible value for Most significant bit (MSB) if MSB is 1
-	li $a3, 4  #  Max possible length of a valid char array
 	li $t8, 0  #  initializing to get the final conversion sum
 
 	beq $t2, 0, is_empty  #  string has all spaces
@@ -145,6 +142,10 @@ start_conversion:
 	bne $t1, $zero, needs_pading
 
 	needs_pading:
+		li $a1, 35  #  loading the base
+		li $a2, 42875  #  (base^3) -> Highest possible value for Most significant bit (MSB) if MSB is 1
+		move $a0, s1
+		li $a3, 4  #  Max possible length of a valid char array
 		jal padding
 
 	move $a3, $t7  #  move the string again to $a3 for fresh calculation as an argument for function call
