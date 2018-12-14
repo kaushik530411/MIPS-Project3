@@ -176,63 +176,63 @@ padding:
 		jr $ra
 
 ConversionMain:
-actual_conversion_loop:
-	lb $a0, 0($t0)
-	beq $a0, 10, conversion_done # last char is line feed ($a0 = 10) so exit the loop and start conversion
+	actual_conversion_loop:
+		lb $a0, 0($t0)
+		beq $a0, 10, conversion_done # last char is line feed ($a0 = 10) so exit the loop and start conversion
 
-	addi $t0, $t0, 1  #  shifing the marker to the right by one byte
+		addi $t0, $t0, 1  #  shifing the marker to the right by one byte
 
-	slti $t1, $a0, 122 # if $a0 < 122 ($a0 = [0, 121]) ->  $t1 = 1, else $t0 = 0 ($a0 = [122, 127])
-	beq $t1, $zero, invalid
+		slti $t1, $a0, 122 # if $a0 < 122 ($a0 = [0, 121]) ->  $t1 = 1, else $t0 = 0 ($a0 = [122, 127])
+		beq $t1, $zero, invalid
 
-	beq $a0, 32, actual_conversion_loop  #  skip the space char
+		beq $a0, 32, actual_conversion_loop  #  skip the space char
 
-	slti $t1, $a0, 48  # if $a0 < 48 ($a0 = [0, 47] - 32) -> $t1 = 1, else $t0 = 0 ($a0 = [48, 121])
-	bne $t1, $zero, invalid
+		slti $t1, $a0, 48  # if $a0 < 48 ($a0 = [0, 47] - 32) -> $t1 = 1, else $t0 = 0 ($a0 = [48, 121])
+		bne $t1, $zero, invalid
 
-	slti $t1, $a0, 58  #  if $a0 < 58 ($a0 = [48, 57]) -> $t1 = 1, else $t0 = 0 ($a0 = [58, 121])
-	bne $t1, $zero, digit_conversion
-	
-	slti $t1, $a0, 65  #  if  $a0 < 65 ($a0 = [58, 64]) -> $t1 = 1, else $t0 = 0 ($a0 = [65, 121])
-	bne $t1, $zero, invalid
+		slti $t1, $a0, 58  #  if $a0 < 58 ($a0 = [48, 57]) -> $t1 = 1, else $t0 = 0 ($a0 = [58, 121])
+		bne $t1, $zero, digit_conversion
 
-	slti $t1, $a0, 90  #  if $a0 < 90 ($a0 = [65, 89]) -> $t1 = 1, else $t0 = 0 ($a0 = [90, 121])
-	bne $t1, $zero, upper_conversion
+		slti $t1, $a0, 65  #  if  $a0 < 65 ($a0 = [58, 64]) -> $t1 = 1, else $t0 = 0 ($a0 = [65, 121])
+		bne $t1, $zero, invalid
 
-	slti $t1, $a0, 97  #  if $a0 < 97 ($a0 = [90, 96]) -> $t1 = 1, else $t0 = 0 ($a0 = [97, 121])
-	bne $t1, $zero, invalid
-	
-	slti $t1, $a0, 122  #if $a0 < 122 (#a0 = [97, 121]) -> $t1 = 1, else $t0 = 0 but max possible $a0 = 121, so 'else' not possible
-	bne $t1, $zero, lower_conversion
+		slti $t1, $a0, 90  #  if $a0 < 90 ($a0 = [65, 89]) -> $t1 = 1, else $t0 = 0 ($a0 = [90, 121])
+		bne $t1, $zero, upper_conversion
 
-	j actual_conversion_loop
+		slti $t1, $a0, 97  #  if $a0 < 97 ($a0 = [90, 96]) -> $t1 = 1, else $t0 = 0 ($a0 = [97, 121])
+		bne $t1, $zero, invalid
 
-digit_conversion:
-	addi $a0, $a0, -48  #  conversion of ascii value to base-35
-	mult $a0, $a2  # [bit_value * 35^n]
-	mflo $t9
-	add $t8, $t8, $t9  #  adding the sum for each bit multiplication
-	div $a2, $a1
-	mflo $a2  #  [35^(n-1) = (35^n)/35]
-	j actual_conversion_loop
+		slti $t1, $a0, 122  #if $a0 < 122 (#a0 = [97, 121]) -> $t1 = 1, else $t0 = 0 but max possible $a0 = 121, so 'else' not possible
+		bne $t1, $zero, lower_conversion
 
-upper_conversion:
-	addi $a0, $a0, -55
-	mult $a0, $a2  # [bit_value * 35^n]
-	mflo $t9
-	add $t8, $t8, $t9  #  adding the sum for each bit multiplication
-	div $a2, $a1
-	mflo $a2  #  [35^(n-1) = (35^n)/35]
-	j actual_conversion_loop
+		j actual_conversion_loop
 
-lower_conversion:
-	addi $a0, $a0, -87
-	mult $a0, $a2  # [bit_value * 35^n]
-	mflo $t9
-	add $t8, $t8, $t9  #  adding the sum for each bit multiplication
-	div $a2, $a1
-	mflo $a2  #  [35^(n-1) = (35^n)/35]
-	j actual_conversion_loop
+	digit_conversion:
+		addi $a0, $a0, -48  #  conversion of ascii value to base-35
+		mult $a0, $a2  # [bit_value * 35^n]
+		mflo $t9
+		add $t8, $t8, $t9  #  adding the sum for each bit multiplication
+		div $a2, $a1
+		mflo $a2  #  [35^(n-1) = (35^n)/35]
+		j actual_conversion_loop
 
-conversion_done:
-	jr $ra
+	upper_conversion:
+		addi $a0, $a0, -55
+		mult $a0, $a2  # [bit_value * 35^n]
+		mflo $t9
+		add $t8, $t8, $t9  #  adding the sum for each bit multiplication
+		div $a2, $a1
+		mflo $a2  #  [35^(n-1) = (35^n)/35]
+		j actual_conversion_loop
+
+	lower_conversion:
+		addi $a0, $a0, -87
+		mult $a0, $a2  # [bit_value * 35^n]
+		mflo $t9
+		add $t8, $t8, $t9  #  adding the sum for each bit multiplication
+		div $a2, $a1
+		mflo $a2  #  [35^(n-1) = (35^n)/35]
+		j actual_conversion_loop
+
+	conversion_done:
+		jr $ra
