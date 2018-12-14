@@ -176,10 +176,10 @@ padding:
 
 ConversionMain:
 	actual_conversion_loop:
-		lb $a0, 0($t0)
+		lb $a0, 0($a3)
 		beq $a0, 10, conversion_done # last char is line feed ($a0 = 10) so exit the loop and start conversion
 
-		addi $t0, $t0, 1  #  shifing the marker to the right by one byte
+		addi $a3, $a3, 1  #  shifing the marker to the right by one byte
 
 		slti $t1, $a0, 122 # if $a0 < 122 ($a0 = [0, 121]) ->  $t1 = 1, else $t0 = 0 ($a0 = [122, 127])
 		beq $t1, $zero, invalid
