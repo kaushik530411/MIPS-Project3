@@ -138,7 +138,10 @@ start_conversion:
 	beq $s0, -1, invalid  #  if spaces between valid chars of required length
 
 	slti $t1, $s1, 4  #  check if padding of the input is required
-	bne $t1, $zero, padding
+	bne $t1, $zero, needs_pading
+
+	needs_pading:
+		jal padding
 
 actual_conversion_loop:
 	lb $a0, 0($t0)
@@ -201,11 +204,13 @@ lower_conversion:
 padding:
 	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
 padding_loop:
-	beq $t5, 0, actual_conversion_loop
+	beq $t5, 0, padding_done
 	addi $t5, $t5, -1
 	div $a2, $a1
 	mflo $a2
 	j padding_loop
+padding_done
+	jr $ra
 
 is_long:
 	li $v0, 4  #  system call code for printing string = 4
