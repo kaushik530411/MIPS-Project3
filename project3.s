@@ -148,6 +148,7 @@ start_conversion:
 		li $a3, 4  #  Max possible length of a valid char array
 		jal padding  # function call with all the arguments $a0, $a1, $a2 and $a3.
 
+	move $a2, $v1
 	move $a3, $t7  #  move the string again to $a3 for fresh calculation as an argument for function call
 	jal ConversionMain  #  Function call too carry out digit_conversion, upper_conversion and lower_conversion.
 
