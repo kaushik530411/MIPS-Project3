@@ -143,6 +143,33 @@ start_conversion:
 	needs_pading:
 		jal padding
 
+is_long:
+	li $v0, 4  #  system call code for printing string = 4
+	la $a0, input_long  # load address of string to be printed into $a0
+	syscall
+	j exit  #  exit since it is too long
+
+print_value:
+	li $v0, 1  # to print the intezer
+	addi $a0, $t8, 0  # print the actual sum
+	syscall
+	
+exit:
+	li $v0, 10 # end the program
+	syscall
+
+#--------------------------------------------- SUB-PROGRAMS ---------------------------------------------
+padding:
+	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
+	padding_loop:
+		beq $t5, 0, padding_done
+		addi $t5, $t5, -1
+		div $a2, $a1
+		mflo $a2
+		j padding_loop
+	padding_done
+		jr $ra
+
 actual_conversion_loop:
 	lb $a0, 0($t0)
 	beq $a0, 10, print_value # last char is line feed ($a0 = 10) so exit the loop and start conversion
@@ -200,30 +227,3 @@ lower_conversion:
 	div $a2, $a1
 	mflo $a2  #  [35^(n-1) = (35^n)/35]
 	j actual_conversion_loop
-
-is_long:
-	li $v0, 4  #  system call code for printing string = 4
-	la $a0, input_long  # load address of string to be printed into $a0
-	syscall
-	j exit  #  exit since it is too long
-
-print_value:
-	li $v0, 1  # to print the intezer
-	addi $a0, $t8, 0  # print the actual sum
-	syscall
-	
-exit:
-	li $v0, 10 # end the program
-	syscall
-
-#--------------------------------------------- SUB-PROGRAMS ---------------------------------------------
-padding:
-	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
-	padding_loop:
-		beq $t5, 0, padding_done
-		addi $t5, $t5, -1
-		div $a2, $a1
-		mflo $a2
-		j padding_loop
-	padding_done
-		jr $ra
