@@ -149,9 +149,9 @@ start_conversion:
 	needs_pading:
 		jal padding
 	  
-	  jal ConversionMain
+	  jal ConversionMain  #  Function call too carry out digit_conversion, upper_conversion and lower_conversion.
 
-	  jal print_value
+	  jal print_value  #  Function call that prints the value.
 	  
 exit:
 	li $v0, 10 # end the program
