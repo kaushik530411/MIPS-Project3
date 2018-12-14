@@ -144,7 +144,7 @@ start_conversion:
 	needs_pading:
 		li $a1, 35  #  loading the base
 		li $a2, 42875  #  (base^3) -> Highest possible value for Most significant bit (MSB) if MSB is 1
-		move $a0, s1
+		move $a0, $s1
 		li $a3, 4  #  Max possible length of a valid char array
 		jal padding  # function call with all the arguments $a0, $a1, $a2 and $a3.
 
