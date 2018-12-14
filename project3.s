@@ -122,6 +122,12 @@ invalid:
 	syscall
 	j exit
 
+is_long:
+	li $v0, 4  #  system call code for printing string = 4
+	la $a0, input_long  # load address of string to be printed into $a0
+	syscall
+	j exit  #  exit since it is too long
+
 start_conversion:
 	li $a1, 35  #  loading the base
 	li $a2, 42875  #  (base^3) -> Highest possible value for Most significant bit (MSB) if MSB is 1
@@ -144,12 +150,6 @@ start_conversion:
 		jal padding
 	  
 	  jal ConversionMain
-
-is_long:
-	li $v0, 4  #  system call code for printing string = 4
-	la $a0, input_long  # load address of string to be printed into $a0
-	syscall
-	j exit  #  exit since it is too long
 
 print_value:
 	li $v0, 1  # to print the intezer
