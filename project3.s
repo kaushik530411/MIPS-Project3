@@ -172,7 +172,7 @@ padding:
 		div $a2, $a1
 		mflo $a2
 		j padding_loop
-	padding_done
+	padding_done:
 		jr $ra
 
 ConversionMain:
