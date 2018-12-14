@@ -219,11 +219,11 @@ exit:
 #--------------------------------------------- SUB-PROGRAMS ---------------------------------------------
 padding:
 	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
-padding_loop:
-	beq $t5, 0, padding_done
-	addi $t5, $t5, -1
-	div $a2, $a1
-	mflo $a2
-	j padding_loop
-padding_done
-	jr $ra
+	padding_loop:
+		beq $t5, 0, padding_done
+		addi $t5, $t5, -1
+		div $a2, $a1
+		mflo $a2
+		j padding_loop
+	padding_done
+		jr $ra
