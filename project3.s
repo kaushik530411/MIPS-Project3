@@ -139,9 +139,9 @@ start_conversion:
 	beq $s0, -1, invalid  #  if spaces between valid chars of required length
 
 	slti $t1, $s1, 4  #  check if padding of the input is required
-	bne $t1, $zero, needs_pading
+	bne $t1, $zero, needs_padding
 
-	needs_pading:
+	needs_padding:
 		li $a1, 35  #  loading the base
 		li $a2, 42875  #  (base^3) -> Highest possible value for Most significant bit (MSB) if MSB is 1
 		move $a0, $s1  #moving the length of VALID chars to $a0
