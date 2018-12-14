@@ -201,17 +201,6 @@ lower_conversion:
 	mflo $a2  #  [35^(n-1) = (35^n)/35]
 	j actual_conversion_loop
 
-padding:
-	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
-padding_loop:
-	beq $t5, 0, padding_done
-	addi $t5, $t5, -1
-	div $a2, $a1
-	mflo $a2
-	j padding_loop
-padding_done
-	jr $ra
-
 is_long:
 	li $v0, 4  #  system call code for printing string = 4
 	la $a0, input_long  # load address of string to be printed into $a0
@@ -228,3 +217,13 @@ exit:
 	syscall
 
 #--------------------------------------------- SUB-PROGRAMS ---------------------------------------------
+padding:
+	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
+padding_loop:
+	beq $t5, 0, padding_done
+	addi $t5, $t5, -1
+	div $a2, $a1
+	mflo $a2
+	j padding_loop
+padding_done
+	jr $ra
