@@ -151,16 +151,18 @@ start_conversion:
 	  
 	  jal ConversionMain
 
-print_value:
-	li $v0, 1  # to print the intezer
-	addi $a0, $t8, 0  # print the actual sum
-	syscall
+
 	
 exit:
 	li $v0, 10 # end the program
 	syscall
 
 #--------------------------------------------- SUB-PROGRAMS ---------------------------------------------
+print_value:
+	li $v0, 1  # to print the intezer
+	addi $a0, $t8, 0  # print the actual sum
+	syscall
+
 padding:
 	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
 	padding_loop:
