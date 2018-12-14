@@ -181,27 +181,27 @@ ConversionMain:
 
 		addi $a3, $a3, 1  #  shifing the marker to the right by one byte
 
-		slti $t1, $a0, 122 # if $a0 < 122 ($a0 = [0, 121]) ->  $t1 = 1, else $t0 = 0 ($a0 = [122, 127])
+		slti $t1, $a0, 122 # if $a0 < 122 ($a0 = [0, 121]) ->  $t1 = 1, else $a3 = 0 ($a0 = [122, 127])
 		beq $t1, $zero, invalid
 
 		beq $a0, 32, actual_conversion_loop  #  skip the space char
 
-		slti $t1, $a0, 48  # if $a0 < 48 ($a0 = [0, 47] - 32) -> $t1 = 1, else $t0 = 0 ($a0 = [48, 121])
+		slti $t1, $a0, 48  # if $a0 < 48 ($a0 = [0, 47] - 32) -> $t1 = 1, else $a3 = 0 ($a0 = [48, 121])
 		bne $t1, $zero, invalid
 
-		slti $t1, $a0, 58  #  if $a0 < 58 ($a0 = [48, 57]) -> $t1 = 1, else $t0 = 0 ($a0 = [58, 121])
+		slti $t1, $a0, 58  #  if $a0 < 58 ($a0 = [48, 57]) -> $t1 = 1, else $a3 = 0 ($a0 = [58, 121])
 		bne $t1, $zero, digit_conversion
 
-		slti $t1, $a0, 65  #  if  $a0 < 65 ($a0 = [58, 64]) -> $t1 = 1, else $t0 = 0 ($a0 = [65, 121])
+		slti $t1, $a0, 65  #  if  $a0 < 65 ($a0 = [58, 64]) -> $t1 = 1, else $a3 = 0 ($a0 = [65, 121])
 		bne $t1, $zero, invalid
 
-		slti $t1, $a0, 90  #  if $a0 < 90 ($a0 = [65, 89]) -> $t1 = 1, else $t0 = 0 ($a0 = [90, 121])
+		slti $t1, $a0, 90  #  if $a0 < 90 ($a0 = [65, 89]) -> $t1 = 1, else $a3 = 0 ($a0 = [90, 121])
 		bne $t1, $zero, upper_conversion
 
-		slti $t1, $a0, 97  #  if $a0 < 97 ($a0 = [90, 96]) -> $t1 = 1, else $t0 = 0 ($a0 = [97, 121])
+		slti $t1, $a0, 97  #  if $a0 < 97 ($a0 = [90, 96]) -> $t1 = 1, else $a3 = 0 ($a0 = [97, 121])
 		bne $t1, $zero, invalid
 
-		slti $t1, $a0, 122  #if $a0 < 122 (#a0 = [97, 121]) -> $t1 = 1, else $t0 = 0 but max possible $a0 = 121, so 'else' not possible
+		slti $t1, $a0, 122  #if $a0 < 122 (#a0 = [97, 121]) -> $t1 = 1, else $a3 = 0 but max possible $a0 = 121, so 'else' not possible
 		bne $t1, $zero, lower_conversion
 
 		j actual_conversion_loop
