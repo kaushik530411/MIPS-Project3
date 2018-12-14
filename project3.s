@@ -150,6 +150,7 @@ start_conversion:
 	move $a3, $t7  #  move the string again to $a3 for fresh calculation as an argument for function call
 	jal ConversionMain  #  Function call too carry out digit_conversion, upper_conversion and lower_conversion.
 
+	move $a3, $v1  #  Argument for the print function
 	jal print_value  #  Function call that prints the value.
 	  
 exit:
@@ -159,7 +160,7 @@ exit:
 #--------------------------------------------- SUB-PROGRAMS ---------------------------------------------
 print_value:
 	li $v0, 1  # to print the intezer
-	addi $a0, $t8, 0  # print the actual sum
+	addi $a0, $a3, 0  # print the actual sum
 	syscall
 	jr $ra
 
