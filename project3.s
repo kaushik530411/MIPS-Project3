@@ -234,4 +234,5 @@ ConversionMain:
 		j actual_conversion_loop
 
 	conversion_done:
+		add $v1, $t8, $zero  #  loaded the final sum of conversion as a return value in $v1
 		jr $ra
