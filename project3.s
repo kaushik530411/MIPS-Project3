@@ -146,7 +146,7 @@ start_conversion:
 		li $a2, 42875  #  (base^3) -> Highest possible value for Most significant bit (MSB) if MSB is 1
 		move $a0, s1
 		li $a3, 4  #  Max possible length of a valid char array
-		jal padding
+		jal padding  # function call with all the arguments $a0, $a1, $a2 and $a3.
 
 	move $a3, $t7  #  move the string again to $a3 for fresh calculation as an argument for function call
 	jal ConversionMain  #  Function call too carry out digit_conversion, upper_conversion and lower_conversion.
