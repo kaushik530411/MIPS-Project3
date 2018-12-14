@@ -166,7 +166,7 @@ print_value:
 	jr $ra
 
 padding:
-	sub $t5, $a3, $s1  # difference between ideal and input string (valid) lengths
+	sub $t5, $a3, $a0  # difference between ideal and input string (valid) lengths
 	padding_loop:
 		beq $t5, 0, padding_done
 		addi $t5, $t5, -1
